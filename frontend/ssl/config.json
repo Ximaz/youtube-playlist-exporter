@@ -1,0 +1,17 @@
+{
+  "record": {
+    "hosts": [
+      "localhost",
+      "172.31.208.1",
+      "192.168.230.1",
+      "192.168.232.1",
+      "192.168.0.39",
+      "127.0.0.1"
+    ],
+    "hash": {
+      "key": "a39214994a9e1819d5d6e3caa1d0999034640247419724d34169736072924ed4",
+      "cert": "34c92bbf928b5c42bb1ecaf031b5820e2fe7e59c32bd9e9f92e64a154002edc6"
+    }
+  },
+  "configFilePath": "C:\\Users\\DURAND Malo\\Desktop\\youtube-playlist-downloader\\frontend\\ssl\\config.json"
+}

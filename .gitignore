@@ -1,0 +1,8 @@
+.env
+backend/.env
+node_modules
+backend/dist
+frontend/.output
+frontend/.vinxi
+frontend/bin/*
+frontend/downloads

@@ -10,3 +10,4 @@ frontend/downloads
 nginx/ssl/*
 !nginx/ssl/.gitkeep
 nginx_*_logs
+app/downloads

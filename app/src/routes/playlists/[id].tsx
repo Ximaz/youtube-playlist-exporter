@@ -15,7 +15,7 @@ async function exportPlaylistVideos(
 ) {
   const playlistVideosIds = await YoutubeAPI.getPlaylistVideos(playlistId);
 
-  const chunkSize = 4;
+  const batchSize = 4;
 
   const allVideoMetadata = (
     await Promise.all(playlistVideosIds.map(getAudioUrl))
@@ -28,10 +28,10 @@ async function exportPlaylistVideos(
 
   totalSignal[1](() => totalBytes);
 
-  for (let i = 0; i < allVideoMetadata.length; i += chunkSize) {
+  for (let i = 0; i < allVideoMetadata.length; i += batchSize) {
     await Promise.all(
       allVideoMetadata
-        .slice(i, i + chunkSize)
+        .slice(i, i + batchSize)
         .map((videoMetadata) => getAudio(videoMetadata, progressSignal))
     );
   }

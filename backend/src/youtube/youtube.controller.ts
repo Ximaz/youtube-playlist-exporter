@@ -3,7 +3,7 @@ import { YoutubeService } from './youtube.service';
 import {
   YoutubePlaylist,
   YoutubePlaylists,
-} from './interfaces/youtube-playlist.interface';
+} from '../../typings/youtube-playlist.interface';
 
 @Controller('/youtube')
 export class YoutubeController {

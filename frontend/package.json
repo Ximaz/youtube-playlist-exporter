@@ -2,9 +2,9 @@
   "name": "youtube-playlist-downloader-frontend",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev --port 8080",
+    "dev": "vinxi dev --port 8081",
     "build": "vinxi build",
-    "start": "vinxi start --port 8080",
+    "start": "vinxi start --port 8081",
     "version": "vinxi version",
     "vinxi": "vinxi"
   },
@@ -21,8 +21,7 @@
     "solid-js": "^1.9.2",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "vinxi": "^0.4.3",
-    "vite-plugin-mkcert": "^1.17.6"
+    "vinxi": "^0.4.3"
   },
   "engines": {
     "node": ">=18"

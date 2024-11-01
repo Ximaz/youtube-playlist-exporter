@@ -11,8 +11,6 @@ import {
 } from "node:fs";
 import path from "node:path";
 
-import { USER_AGENT } from "./youtube-exporter";
-
 import archiver from "archiver";
 
 import ffmpeg from "fluent-ffmpeg";
@@ -26,7 +24,6 @@ export async function audioToBlobParts(
 ): Promise<{ blobParts: ArrayBufferLike[]; readBytes: number }> {
   const response = await fetch(url, {
     headers: {
-      "user-agent": USER_AGENT,
       range: `bytes=${rangeStart}-${rangeEnd}`,
     },
   });
@@ -103,11 +100,10 @@ export async function zipAudioFolder(): Promise<string> {
 
   const fmt = "mp3";
 
-  await convertAudioFiles(fmt);
+  // await convertAudioFiles(fmt);
 
-  const files = readdirSync(DOWNLOAD_FOLDER, { withFileTypes: true }).filter(
-    ({ name }) => name.endsWith(`.${fmt}`)
-  );
+  const files = readdirSync(DOWNLOAD_FOLDER, { withFileTypes: true })
+    // .filter(({ name }) => name.endsWith(`.${fmt}`));
 
   const zip = createWriteStream(zipFilepath);
 
@@ -125,7 +121,6 @@ export async function zipAudioFolder(): Promise<string> {
   for (const file of files) {
     const filepath = path.join(DOWNLOAD_FOLDER, file.name);
 
-    console.log(filepath);
     const readStream = createReadStream(filepath);
 
     archive.append(readStream, { name: file.name });

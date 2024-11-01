@@ -1,0 +1,11 @@
+*.spec.ts
+node_modules
+test
+.env
+.env.example
+.eslintrc.js
+.gitignore
+.prettierrc
+.git
+nest-cli.json
+README.md

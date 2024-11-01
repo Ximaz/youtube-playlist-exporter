@@ -1,29 +1,17 @@
-import { readFileSync } from 'node:fs';
-
-import { NestFactory } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
-import * as session from 'express-session';
-
-import { AppModule } from './app.module';
 import RedisStore from 'connect-redis';
 import { createClient } from 'redis';
 
-async function bootstrap() {
-  const httpsOptions = {
-    key: readFileSync('./ssl/localhost.key'),
-    cert: readFileSync('./ssl/localhost.crt'),
-  };
+import * as session from 'express-session';
+import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get(ConfigService);
-
-  const FRONTEND = configService.getOrThrow<string>('FRONTEND');
-
-  app.enableCors({
-    credentials: true,
-    origin: FRONTEND,
-  });
 
   const EXPRESS_SESSION_SECRET = configService.getOrThrow<string>(
     'EXPRESS_SESSION_SECRET',
@@ -46,6 +34,8 @@ async function bootstrap() {
     client: redisClient,
   });
 
+  app.set('trust proxy', true);
+
   app.use(
     session({
       name: 'youtube-playlist-downloader',
@@ -62,9 +52,7 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = configService.getOrThrow<string>('PORT');
-
-  await app.listen(PORT, '0.0.0.0');
+  app.listen(8080, '0.0.0.0');
 }
 
 bootstrap();

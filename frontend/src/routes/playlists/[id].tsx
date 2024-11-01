@@ -1,5 +1,5 @@
 import { useParams } from "@solidjs/router";
-import { YoutubePlaylist as YoutubePlaylistType } from "../../../../backend/dist/youtube/interfaces/youtube-playlist.interface";
+import { YoutubePlaylist as YoutubePlaylistType } from "../../../typings/youtube-playlist.interface";
 import { createResource, createSignal, Show, Signal } from "solid-js";
 import { Progress } from "@kobalte/core/progress";
 import { useAuthContext } from "~/contexts/auth-context";
@@ -13,46 +13,9 @@ async function exportPlaylistVideos(
   progressSignal: Signal<number>,
   totalSignal: Signal<number>
 ) {
-  const playlistVideosIds = [
-    "7vDnr9mxuhA",
-    "h-Fzs4M_hAY",
-    "9EEPJ24-N2w",
-    "1hbfwSswy_0",
-    "GGz3yRFCqUY",
-    "SZgS8Yhq2k8",
-    "MMXrlFBkkkc",
-    "hJGJy5qTcu0",
-    "ovvbCPqgX5E",
-    "vFt2OArMclQ",
-    "eenLOHk8dtc",
-    "SbPjaHCliUE",
-    "tDgn9PwjTXw",
-    "7qmRSBHZp5s",
-    "OGMXeNQkkcg",
-    "IIzIW4Kfi_8",
-    "gZWdlOyE4i0",
-    "g0vy_t1pTPE",
-    "ym4o6a4gbQ4",
-    "3nI2AoXKsOc",
-    "a-bIwAKCBXU",
-    "OMh5j4s0QKs",
-    "BxmAveUMzc4",
-    "aqVTzT2qH98",
-    "PANIioKNJ3I",
-    "bbNVpS7WOj4",
-    "KdUpcI2jID8",
-    "p1xphsbH20E",
-    "-ME66TniXvY",
-    "JRL02FC0AOM",
-    "BY4ctMMCV3A",
-    "a8ehXJTx26k",
-    "LtVP01oEChw",
-    "hPCZVkQKBBk",
-    "_ydwe3MfWSI",
-    "onzULMt9VOE",
-  ]; // await YoutubeAPI.getPlaylistVideos(playlistId);
+  const playlistVideosIds = await YoutubeAPI.getPlaylistVideos(playlistId);
 
-  const chunkSize = 2;
+  const chunkSize = 4;
 
   const allVideoMetadata = (
     await Promise.all(playlistVideosIds.map(getAudioUrl))

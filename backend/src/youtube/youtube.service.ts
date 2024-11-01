@@ -2,12 +2,12 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import {
   YoutubePlaylist,
   YoutubePlaylists,
-} from './interfaces/youtube-playlist.interface';
+} from '../../typings/youtube-playlist.interface';
 import { HttpService } from '@nestjs/axios';
 import {
   YouTubeVideo,
   YoutubeVideos,
-} from './interfaces/youtube-video.interface';
+} from '../../typings/youtube-video.interface';
 
 @Injectable()
 export class YoutubeService {
@@ -55,7 +55,9 @@ export class YoutubeService {
     ).data;
 
     return {
-      videos: response['items'].map((video) => video["contentDetails"]["videoId"]),
+      videos: response['items'].map(
+        (video) => video['contentDetails']['videoId'],
+      ),
       nextPageToken: response.nextPageToken,
     };
   }
@@ -70,7 +72,6 @@ export class YoutubeService {
 
     do {
       try {
-
         const { videos, nextPageToken } = await this.getPlaylistVideosPaginated(
           accessToken,
           playlistId,
@@ -78,7 +79,7 @@ export class YoutubeService {
         );
         allVideos.push(...videos);
         pageToken = nextPageToken;
-      } catch(e) {
+      } catch (e) {
         console.error(e.response.data);
         throw new InternalServerErrorException();
       }

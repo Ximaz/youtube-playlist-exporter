@@ -1,9 +1,9 @@
 import { Accessor, createMemo, createSignal } from "solid-js";
 import {
-  BACKEND_URL,
   OauthCredential,
   RawOauthCredential,
-} from "~/api/constants";
+} from "../../typings/oauth-credential.interface";
+import { getBackendUrl } from "~/api/oauth-google";
 
 const storage = sessionStorage;
 
@@ -41,7 +41,7 @@ const createOauth = (): [
     if (result.expires_at > Date.now()) return result;
 
     const response = await fetch(
-      `${BACKEND_URL}/oauth/refresh?refresh_token=${result.refresh_token}`
+      `${await getBackendUrl()}/oauth/refresh?refresh_token=${result.refresh_token}`
     );
 
     if (!response.ok) {

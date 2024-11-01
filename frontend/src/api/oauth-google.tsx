@@ -1,8 +1,17 @@
-import { BACKEND_URL, OauthCredential, RawOauthCredential } from "./constants";
+import {
+  RawOauthCredential,
+  OauthCredential,
+} from "../../typings/oauth-credential.interface";
+
+export async function getBackendUrl(): Promise<string> {
+  "use server";
+
+  return process.env["VITE_API_URL"]!;
+}
 
 export async function fetchOauthUrl(redirectUri: string): Promise<string> {
   const response = await fetch(
-    `${BACKEND_URL}/oauth/authorization?redirect_uri=${redirectUri}`,
+    `${await getBackendUrl()}/oauth/authorization?redirect_uri=${redirectUri}`,
     {
       credentials: "include",
     }
@@ -18,7 +27,7 @@ export async function getOauthCredential(
   state: string
 ): Promise<OauthCredential> {
   const response = await fetch(
-    `${BACKEND_URL}/oauth/callback?code=${code}&state=${state}`,
+    `${await getBackendUrl()}/oauth/callback?code=${code}&state=${state}`,
     {
       credentials: "include",
     }

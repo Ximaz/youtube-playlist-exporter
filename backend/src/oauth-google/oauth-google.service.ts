@@ -3,7 +3,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { hash } from 'crypto';
 import { Request } from 'express';
-import { OauthCredential } from './interfaces/oauth-credential.interface';
+import { OauthCredential } from '../../typings/oauth-credential.interface';
 
 @Injectable()
 export class OauthGoogleService {

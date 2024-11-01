@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { OauthGoogleService } from './oauth-google.service';
 import { Request } from 'express';
-import { OauthCredential } from './interfaces/oauth-credential.interface';
+import { OauthCredential } from '../../typings/oauth-credential.interface';
 
 @Controller('/oauth')
 export class OauthGoogleController {

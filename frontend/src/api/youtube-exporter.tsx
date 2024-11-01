@@ -10,7 +10,7 @@ import {
   saveBlob,
 } from "./save-youtube-blob";
 
-export const USER_AGENT =
+const USER_AGENT =
   "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip";
 
 async function getJsPlayer(
@@ -192,7 +192,7 @@ async function audioToBlob(
   totalBytes: number,
   progressSignal: Signal<number>
 ): Promise<ArrayBufferLike[]> {
-  const chunkSize = 1048576;
+  const chunkSize = 1e+6; // 1mb
 
   let bytes = 0;
 

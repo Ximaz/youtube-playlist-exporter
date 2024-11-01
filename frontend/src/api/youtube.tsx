@@ -1,13 +1,16 @@
 import { Accessor } from "solid-js";
-import { BACKEND_URL, OauthCredential } from "./constants";
-import { YouTubeVideo } from "../../../backend/dist/youtube/interfaces/youtube-video.interface";
-import { YoutubePlaylist } from "../../../backend/dist/youtube/interfaces/youtube-playlist.interface";
+import { OauthCredential } from "typings/oauth-credential.interface";
+import { YouTubeVideo } from "typings/youtube-video.interface";
+import { YoutubePlaylist } from "typings/youtube-playlist.interface";
+import { getBackendUrl } from "./oauth-google";
 
 export type YoutubeAPIType = {
   disconnect: () => Promise<boolean>;
   getPlaylists: () => Promise<YoutubePlaylist[]>;
-  getPlaylistVideos: (playlistId: YoutubePlaylist["id"]) => Promise<YouTubeVideo["id"][]>;
-}
+  getPlaylistVideos: (
+    playlistId: YoutubePlaylist["id"]
+  ) => Promise<YouTubeVideo["id"][]>;
+};
 
 export function YoutubeApi(
   oauthCredentialAccessor: Accessor<Promise<OauthCredential | null>>,
@@ -20,7 +23,7 @@ export function YoutubeApi(
       if (null === oauthCredential) throw new Error("Forbidden");
 
       const response = await fetch(
-        `${BACKEND_URL}/oauth/revoke?access_token=${oauthCredential.access_token}&refresh_token=${oauthCredential.refresh_token}`,
+        `${await getBackendUrl()}/oauth/revoke?access_token=${oauthCredential.access_token}&refresh_token=${oauthCredential.refresh_token}`,
         { method: "DELETE" }
       );
 
@@ -35,7 +38,7 @@ export function YoutubeApi(
       if (null === oauthCredential) throw new Error("Forbidden");
 
       const response = await fetch(
-        `${BACKEND_URL}/youtube/playlists?access_token=${oauthCredential.access_token}`
+        `${await getBackendUrl()}/youtube/playlists?access_token=${oauthCredential.access_token}`
       );
 
       const data = response.json();
@@ -51,7 +54,7 @@ export function YoutubeApi(
       if (null === oauthCredential) throw new Error("Forbidden");
 
       const response = await fetch(
-        `${BACKEND_URL}/youtube/playlists/${playlistId}/videos?access_token=${oauthCredential.access_token}`
+        `${await getBackendUrl()}/youtube/playlists/${playlistId}/videos?access_token=${oauthCredential.access_token}`
       );
 
       const data = response.json();

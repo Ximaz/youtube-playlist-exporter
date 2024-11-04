@@ -1,5 +1,5 @@
 import { Accessor } from "solid-js";
-import { revoke } from "./oauth/revoke/revoke";
+import { revoke } from "../routes/api/oauth/revoke/revoke";
 import { OauthCredential } from "typings/oauth-credential.interface";
 import { YouTubeVideo } from "typings/youtube-video.interface";
 import { YoutubePlaylist } from "typings/youtube-playlist.interface";

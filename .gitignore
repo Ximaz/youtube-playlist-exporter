@@ -1,13 +1,6 @@
 .env
-backend/.env
 node_modules
-backend/dist
-frontend/.output
-frontend/.vinxi
-frontend/bin/*
-frontend/downloads
-.env
 nginx/ssl/*
 !nginx/ssl/.gitkeep
 nginx_*_logs
-app/downloads
+downloads

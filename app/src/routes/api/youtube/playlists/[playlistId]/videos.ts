@@ -63,7 +63,7 @@ export async function GET(
 
   const playlistId = event.params.playlistId;
 
-  const videos: YouTubeVideo["id"][] = []; //await getYoutubePlaylistVideos(accessToken, playlistId);
+  const videos: YouTubeVideo["id"][] = await getYoutubePlaylistVideos(accessToken, playlistId);
 
   return videos;
 }

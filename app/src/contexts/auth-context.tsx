@@ -1,6 +1,6 @@
 import { createContext, useContext, Component, JSX, Accessor } from "solid-js";
 import createOauthCredential from "../hooks/oauth";
-import { YoutubeApi, YoutubeAPIType } from "~/routes/api/youtube";
+import { YoutubeApi, YoutubeAPIType } from "~/utils/youtube";
 import { OauthCredential } from "typings/oauth-credential.interface";
 
 type AuthType = {

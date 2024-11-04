@@ -151,7 +151,7 @@ interface StreamingData {
   serverAbrStreamingUrl: string;
 }
 
-interface Format {
+export interface Format {
   itag: number;
   mimeType: string;
   bitrate: number;

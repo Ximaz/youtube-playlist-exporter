@@ -13,7 +13,7 @@ To use this project, you must have a Google application with `YouTube Data API V
 enabled, and an OAuth2.0 consent screen. Google should provide you a `client_id`
 and a `client_secret` for your OAuth2.0 credential. Store them inside a `.env`.
 
-You can take a look to what values are expected inside the `.env.example` file.
+You can take a look to what values are expected inside the [`.env.example`](https://github.com/Ximaz/youtube-playlist-exporter/blob/main/.env.example) file.
 If you are lost about OAuth2.0 credential, you may want to follow Google's
 tutorial about it. You can [`click here`](https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps) to learn more.
 

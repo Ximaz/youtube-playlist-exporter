@@ -5,3 +5,4 @@ nginx/ssl/*
 nginx_*_logs
 app/public/downloads/*
 !app/public/downloads/.gitkeep
+.DS_Store

@@ -206,7 +206,7 @@ function Downloader({ convertedFiles }: { convertedFiles: string[] }) {
         when={!zipFile.loading}
         fallback={"Compression de votre playlist en cours..."}
       >
-        <A href={zipFile()!}>Télécharger votre playlist</A>
+        <A href={zipFile()!} download={"playlist.tar.gz"}>Télécharger votre playlist</A>
       </Show>
     </>
   );

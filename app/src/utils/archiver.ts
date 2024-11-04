@@ -35,7 +35,7 @@ export async function zipAudioFolder(files: string[]): Promise<string> {
 
     return archive
       .finalize()
-      .then(() => resolve(`/public/downloads/${zipFilename}`))
+      .then(() => resolve(`/downloads/${zipFilename}`))
       .catch(reject);
   });
 }

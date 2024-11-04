@@ -5,8 +5,7 @@ import {
   YoutubePlayerMetadata,
 } from "typings/youtube-player-metadata.interface";
 
-import path from "node:path";
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { existsSync, unlinkSync, writeFileSync } from "node:fs";
 
 const USER_AGENT =
   "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip";
@@ -78,7 +77,9 @@ class YoutubePlayerExporter {
 
       const urlQueries = new URLSearchParams(url);
 
-      const s = decodeURIComponent(urlQueries.get("s")!);
+      const s = decodeURIComponent(
+        (urlQueries.get("s") ?? urlQueries.get("sig"))!
+      );
 
       const ns = urlQueries.get("n")!;
 

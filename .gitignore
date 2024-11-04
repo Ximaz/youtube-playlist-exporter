@@ -3,4 +3,5 @@ node_modules
 nginx/ssl/*
 !nginx/ssl/.gitkeep
 nginx_*_logs
-downloads
+app/public/downloads/*
+!app/public/downloads/.gitkeep

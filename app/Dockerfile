@@ -20,8 +20,6 @@ COPY app.config.ts app.config.ts
 
 COPY components.json components.json
 
-COPY env.d.ts .env.d.ts
-
 COPY src/ src/
 
 COPY public/ public/

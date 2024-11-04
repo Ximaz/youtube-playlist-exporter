@@ -51,7 +51,7 @@ export async function downloadAudio(
 ): Promise<string> {
   const ext = /^audio\/([^;]+)/.exec(fmt.mimeType)![1];
 
-  const filename = `${metadata.videoDetails.author} - ${metadata.videoDetails.title}.${ext}`;
+  const filename = `${metadata.videoDetails.author} - ${metadata.videoDetails.title.replaceAll('/', '')}.${ext}`;
 
   const filepath = `./public/downloads/${filename}`;
 
@@ -59,13 +59,18 @@ export async function downloadAudio(
 
   const totalBytes = +fmt.contentLength;
 
-  const blobParts = await downloadAllAudioChunks(
-    url,
-    totalBytes,
-    progressSignal
-  );
+  try {
+    const blobParts = await downloadAllAudioChunks(
+      url,
+      totalBytes,
+      progressSignal
+    );
+    await saveBlob(blobParts, fmt.mimeType, filepath);
 
-  await saveBlob(blobParts, fmt.mimeType, filepath);
-
-  return filepath;
+    return filepath;
+  } catch (e) {
+    console.error(url);
+    console.error(e);
+    throw e;
+  }
 }

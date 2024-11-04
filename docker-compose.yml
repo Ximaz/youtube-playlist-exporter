@@ -1,10 +1,10 @@
 services:
   app:
-    # build:
-      # context: app/
-      # dockerfile: Dockerfile
-    # container_name: youtube-playlist-downloader
-    # restart: unless-stopped
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    container_name: youtube-playlist-downloader
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -19,8 +19,8 @@ services:
       - ./nginx/ssl/cert.pem:/etc/nginx/cert/public_key.pem:ro
       - ./nginx_rp_logs:/var/log/nginx:rw
     ports:
-      - 8080:80
-      - 8443:443
+      - 80:80
+      - 443:443
     links:
      - app
     networks:

@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    container_name: youtube-playlist-downloader
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - reverse-proxy-network
+
+  nginx:
+    image: nginx:latest
+    container_name: youtube-playlist-downloader-reverse-proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/ssl/dev.pem:/etc/nginx/cert/private_key.pem:ro
+      - ./nginx/ssl/cert.pem:/etc/nginx/cert/public_key.pem:ro
+      - ./nginx_rp_logs:/var/log/nginx:rw
+    ports:
+      - 80:80
+      - 443:443
+    links:
+     - app
+    networks:
+      - reverse-proxy-network
+
+volumes:
+  youtube-playlist-exporter-redis-volume:
+
+networks:
+  reverse-proxy-network:

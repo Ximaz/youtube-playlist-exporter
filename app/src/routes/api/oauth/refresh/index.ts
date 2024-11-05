@@ -16,8 +16,8 @@ export async function GET(
     return new Response("No 'refresh_token' was provided.", { status: 400 });
 
   const refreshBody = new URLSearchParams({
-    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
+    client_id: process.env["VITE_GOOGLE_CLIENT_ID"]!,
+    client_secret: process.env["VITE_GOOGLE_CLIENT_SECRET"]!,
     grant_type: "refresh_token",
     refresh_token: refreshToken,
   }).toString();

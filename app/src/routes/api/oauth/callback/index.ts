@@ -25,8 +25,8 @@ export async function GET(
   if (null === code) return new Response("No 'code' was provided", { status: 400 });
 
   const exchangeBody = new URLSearchParams({
-    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
+    client_id: process.env["VITE_GOOGLE_CLIENT_ID"]!,
+    client_secret: process.env["VITE_GOOGLE_CLIENT_SECRET"]!,
     code,
     grant_type: "authorization_code",
     redirect_uri: redirectUri,

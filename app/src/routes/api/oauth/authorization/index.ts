@@ -13,7 +13,7 @@ export function GET(event: APIEvent) {
 
   const scope = "https://www.googleapis.com/auth/youtube.readonly";
 
-  url.searchParams.append("client_id", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  url.searchParams.append("client_id", process.env["VITE_GOOGLE_CLIENT_ID"]!);
   url.searchParams.append("redirect_uri", redirectUri);
   url.searchParams.append("scope", scope);
   url.searchParams.append("response_type", "code");

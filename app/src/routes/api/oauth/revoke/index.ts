@@ -4,8 +4,8 @@ import { APIEvent } from "node_modules/@solidjs/start/dist/server";
 
 async function revokeToken(token: string, tokenTypeHint: "access_token" | "refresh_token"): Promise<boolean> {
     const revokeBody = new URLSearchParams({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
+        client_id: process.env["VITE_GOOGLE_CLIENT_ID"]!,
+        client_secret: process.env["VITE_GOOGLE_CLIENT_SECRET"]!,
         token,
         token_type_hint: tokenTypeHint
     });

@@ -2,13 +2,11 @@
 
 import { existsSync, unlinkSync } from "node:fs";
 
-import path from "node:path";
-
 import ffmpeg from "fluent-ffmpeg";
 
 import relativeFFmpegPath from "ffmpeg-static";
 
-const ffmpegPath = path.join(process.cwd(), relativeFFmpegPath!);
+const ffmpegPath = relativeFFmpegPath!.replace(/\/.output\/server/, '');
 
 export async function convertAudioFile(file: string, fmt: string): Promise<string> {
   const convertedFile = `${file.split(".").slice(0, -1).join(".")}.${fmt}`;

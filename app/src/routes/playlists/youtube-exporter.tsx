@@ -14,7 +14,7 @@ async function downloadAllAudioChunks(
   totalBytes: number,
   progressSignal: Signal<number>
 ): Promise<ArrayBufferLike[]> {
-  const chunkSize = 1e6; // 1mb
+  const chunkSize = 1e7; // 10mb
 
   let bytes = 0;
 

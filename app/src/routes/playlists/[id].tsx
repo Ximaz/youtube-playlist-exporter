@@ -26,7 +26,7 @@ async function exportPlaylistVideos(
 ): Promise<string[]> {
   const playlistVideosIds = await YoutubeAPI.getPlaylistVideos(playlistId);
 
-  const batchSize = 4;
+  const batchSize = 1;
 
   const allVideoMetadata = (
     await Promise.all(playlistVideosIds.map(exportYoutubePlayer))

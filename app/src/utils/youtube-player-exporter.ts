@@ -18,6 +18,7 @@ async function getVideoPlayer(videoId: string): Promise<{
   const response = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
     headers: {
       "user-agent": USER_AGENT,
+      connection: "close",
     },
   });
 
@@ -33,6 +34,7 @@ async function getVideoPlayer(videoId: string): Promise<{
     await fetch(`https://www.youtube.com${jsUrl[1]}`, {
       headers: {
         "user-agent": USER_AGENT,
+        "connection": "close"
       },
     })
   ).text();
@@ -55,11 +57,14 @@ class YoutubePlayerExporter {
     private readonly videoId: string
   ) {}
 
-  private getBestAudioQuality(): AdaptiveFormat {
-    return (
+  private getBestAudioQuality(): AdaptiveFormat | null {
+    const formats =
       this.metadata.streamingData.adaptiveFormats ??
-      this.metadata.streamingData.formats
-    )
+      this.metadata.streamingData.formats;
+
+    if (undefined === formats) return null;
+
+    return formats
       .filter((format) => format.mimeType.startsWith("audio/"))
       .sort((a, b) => a.bitrate - b.bitrate)
       .slice(-1)[0];
@@ -70,8 +75,10 @@ class YoutubePlayerExporter {
     ns: string | null;
     url: string;
     fmt: AdaptiveFormat;
-  } {
+  } | null {
     const fmt = this.getBestAudioQuality();
+
+    if (null === fmt) return null;
 
     const signatureCipher = new URLSearchParams(fmt.signatureCipher);
 
@@ -175,8 +182,12 @@ class YoutubePlayerExporter {
     metadata: YoutubePlayerMetadata;
     fmt: AdaptiveFormat;
   } | null {
+    const signatures = this.getSignatures();
+
+    if (null === signatures) return null;
+
     try {
-      const { s, ns, url, fmt } = this.getSignatures();
+      const { s, ns, url, fmt } = signatures;
 
       if (null === s) return { url, metadata: this.metadata, fmt };
 
@@ -206,9 +217,11 @@ class YoutubePlayerExporter {
           console.warn(
             "YouTube is ratelimiting the application. You may want to try again later."
           );
+          break;
         default:
-          console.error(e, this.videoId, JSON.stringify(this.metadata));
+          break;
       }
+      console.error(e, this.videoId, JSON.stringify(this.metadata));
       return null;
     }
   }
@@ -219,11 +232,20 @@ export async function exportStreamChunk(
   rangeStart: number,
   rangeEnd: number
 ): Promise<{ blobParts: ArrayBufferLike[]; readBytes: number }> {
-  const response = await fetch(url, {
-    headers: {
-      range: `bytes=${rangeStart}-${rangeEnd}`,
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        "user-agent": USER_AGENT,
+        range: `bytes=${rangeStart}-${rangeEnd}`,
+        connection: "close"
+      },
+    });
+  } catch (e) {
+    console.log(url, rangeStart, rangeEnd);
+    console.error(JSON.stringify(e));
+    throw e;
+  }
 
   const readBytes = +response.headers.get("Content-Length")!;
 

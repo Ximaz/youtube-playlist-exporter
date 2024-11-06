@@ -10,9 +10,11 @@ import { existsSync, unlinkSync, writeFileSync } from "node:fs";
 const USER_AGENT =
   "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip";
 
-async function getVideoPlayer(
-  videoId: string
-): Promise<{ jsPlayer: string; metadata: YoutubePlayerMetadata }> {
+async function getVideoPlayer(videoId: string): Promise<{
+  jsPlayer: string;
+  metadata: YoutubePlayerMetadata;
+  videoId: string;
+}> {
   const response = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
     headers: {
       "user-agent": USER_AGENT,
@@ -43,13 +45,14 @@ async function getVideoPlayer(
     throw new Error("Unable to retrieve the player's matadata.");
 
   const jsonData = JSON.parse(json[1]);
-  return { jsPlayer: fullJs, metadata: jsonData };
+  return { jsPlayer: fullJs, metadata: jsonData, videoId };
 }
 
 class YoutubePlayerExporter {
   constructor(
     private readonly jsPlayer: string,
-    private readonly metadata: YoutubePlayerMetadata
+    private readonly metadata: YoutubePlayerMetadata,
+    private readonly videoId: string
   ) {}
 
   private getBestAudioQuality(): AdaptiveFormat {
@@ -189,9 +192,23 @@ class YoutubePlayerExporter {
 
       return { url: resultUrl, metadata: this.metadata, fmt };
     } catch (e) {
-      console.warn(
-        `Unable to get the JS player for https://www.youtube.com/watch?v=${this.metadata.videoDetails.videoId} , certainly due to a 'YouTube's policy on nudity or sexual content' violation.`
-      );
+      switch (this.metadata.playabilityStatus.status) {
+        case "ERROR":
+          console.warn(
+            `Unable to get the JS player for https://www.youtube.com/watch?v=${
+              this.videoId
+            } : ${
+              this.metadata.playabilityStatus.reason ?? "no reason provided."
+            }.`
+          );
+          break;
+        case "LOGIN_REQUIRED":
+          console.warn(
+            "YouTube is ratelimiting the application. You may want to try again later."
+          );
+        default:
+          console.error(e, this.videoId, JSON.stringify(this.metadata));
+      }
       return null;
     }
   }
@@ -236,7 +253,8 @@ export async function exportYoutubePlayer(videoId: string): Promise<{
 
   const youtubePlayerExporter = new YoutubePlayerExporter(
     videoPlayer.jsPlayer,
-    videoPlayer.metadata
+    videoPlayer.metadata,
+    videoPlayer.videoId
   );
 
   return youtubePlayerExporter.exportStreamingUrl();

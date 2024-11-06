@@ -50,6 +50,7 @@ interface PlayabilityStatus {
   playableInEmbed: boolean;
   miniplayer: Miniplayer;
   contextParams: string;
+  reason?: string;
   paygatedQualitiesMetadata: PaygatedQualitiesMetadata;
 }
 
